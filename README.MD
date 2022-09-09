@@ -1,6 +1,6 @@
-#Drone Delivery System
+# Drone Delivery System
 
-##folder
+## folder
 - database: MySQL dump file
 - dronecontrol: Backend - Spring Java
 - drone-manager-reactjs: Frontend - ReactJs
@@ -22,8 +22,8 @@
 - frontend:
 	- `npm install`
 	- create `.env`:
-```
-REACT_APP_BINGMAP_API_KEY = Ap4raFmKqev2eLT8Dj3pNN-73PtA4HTh0p6-5mRIJw8vpDS8ICL-Sg8080IvGYdg
-REACT_APP_API_HOST = http://localhost:8080
-```
+		```
+		REACT_APP_BINGMAP_API_KEY = Ap4raFmKqev2eLT8Dj3pNN-73PtA4HTh0p6-5mRIJw8vpDS8ICL-Sg8080IvGYdg
+		REACT_APP_API_HOST = http://localhost:8080
+		```
 	- `npm start` [http://localhost:3000](http://localhost:3000)
