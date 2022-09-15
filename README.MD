@@ -7,16 +7,16 @@
 
 ## required
 - Ide: Eclipse, VSCode
-- Java, NPM
+- Java, NodeJS >= v14
 - Ubuntu 18.04
 - PX4 with jMAVSim
-- MySQL
+- MySQL Workbench
 
 ## build
 - database: import sql file
 - px4: [https://docs.px4.io/main/en/simulation/jmavsim.html](https://docs.px4.io/main/en/simulation/jmavsim.html)
 - backend: 
-	- edit database config `src/main/resources/application.properties`
+	- edit database config `src/main/resources/application.properties` `spring.datasource.username` & `spring.datasource.password`
 	- add permission `chmod +x src/main/resources/sdk/mavsdk_server`
 	- build and run [http://localhost:8080](http://localhost:8080)
 - frontend:
