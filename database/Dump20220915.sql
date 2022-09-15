@@ -18,6 +18,28 @@ USE `drone_manager`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `hibernate_sequence`
+--
+
+DROP TABLE IF EXISTS `hibernate_sequence`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `hibernate_sequence` (
+  `next_val` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hibernate_sequence`
+--
+
+LOCK TABLES `hibernate_sequence` WRITE;
+/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
+INSERT INTO `hibernate_sequence` VALUES (33);
+/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tbl_account`
 --
 
@@ -65,8 +87,9 @@ CREATE TABLE `tbl_drone` (
   `max_speed` int DEFAULT NULL,
   `max_height` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `ip` varchar(20) DEFAULT NULL,
-  `port` int DEFAULT NULL,
+  `connect_type` varchar(15) DEFAULT NULL,
+  `connect_ip` varchar(100) DEFAULT NULL,
+  `connect_port` int DEFAULT NULL,
   `active_mission_id` int DEFAULT NULL,
   `location_longitude` decimal(10,5) DEFAULT NULL,
   `location_latitude` decimal(10,5) DEFAULT NULL,
@@ -85,7 +108,7 @@ CREATE TABLE `tbl_drone` (
 
 LOCK TABLES `tbl_drone` WRITE;
 /*!40000 ALTER TABLE `tbl_drone` DISABLE KEYS */;
-INSERT INTO `tbl_drone` VALUES (1,'IF7MF9IPDD4V','Tuan drone','DJI Mavic',10,10,10,'2022-08-01 15:54:25','localhost',14540,NULL,105.84262,21.00743,0.03200,'2022-08-08 18:50:46',NULL),(2,'MEC8LIYDUYW4','Tuan drone 2','DJI Mavic',12,10,10,'2022-08-01 10:54:25','localhost',14541,NULL,105.84262,21.00743,0.02900,'2022-08-08 18:50:45',NULL),(3,'1ES51UGMNMPF','Tuandrone3','DJI Mavic',10,15,10,'2022-08-01 01:54:25','localhost',14542,NULL,105.84262,21.00743,0.01200,'2022-08-01 20:10:18',NULL),(4,'MPFSE151UGMN','Tuan drone 4','DJI Mini',4,4,4,'2022-08-01 01:54:25','localhost',14543,NULL,NULL,NULL,NULL,NULL,NULL),(14,'GK5RLL2USTFS','Tuan drone 5','DJI',10,10,10,'2022-08-04 01:07:04','localhost',14544,NULL,NULL,NULL,NULL,NULL,NULL),(15,'E7EBGGGESRDS','Tuandrone 6','Mavic',10,12,10,'2022-08-04 01:08:36','localhost',14545,NULL,NULL,NULL,NULL,NULL,NULL),(16,'E7EBGGGESRDS','Tuandrone 6','DJI',10,12,10,'2022-08-04 01:09:37','localhost',14545,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `tbl_drone` VALUES (1,'IF7MF9IPDD4V','Tuan drone','DJI Mavic',10,10,10,'2022-08-01 15:54:25','udp','localhost',14540,NULL,105.84117,21.02450,-0.00900,'2022-09-15 21:51:19',NULL),(2,'MEC8LIYDUYW4','Tuan drone 2','DJI Mavic',12,10,10,'2022-08-01 10:54:25','udp','localhost',14541,NULL,105.84262,21.00743,0.02900,'2022-08-08 18:50:45',NULL),(3,'1ES51UGMNMPF','Tuandrone3','DJI Mavic',10,15,10,'2022-08-01 01:54:25','udp','localhost',14542,NULL,105.84262,21.00743,0.01200,'2022-08-01 20:10:18',NULL),(4,'MPFSE151UGMN','Tuan drone 4','DJI Mini',4,4,4,'2022-08-01 01:54:25','udp','localhost',14543,NULL,NULL,NULL,NULL,NULL,NULL),(14,'GK5RLL2USTFS','Tuan drone 5','DJI',10,10,10,'2022-08-04 01:07:04','udp','localhost',14544,NULL,NULL,NULL,NULL,NULL,NULL),(15,'E7EBGGGESRDS','Tuandrone 6','Mavic',10,12,10,'2022-08-04 01:08:36','udp','localhost',14545,NULL,NULL,NULL,NULL,NULL,NULL),(16,'E7EBGGGESRDS','Tuandrone 6','DJI',10,12,10,'2022-08-04 01:09:37','udp','localhost',14545,NULL,NULL,NULL,NULL,NULL,NULL),(32,'123321ABCCBA','Tuandrone 7','Drone ko ten',10,10,10,'2022-09-15 21:19:54','serial','COM10',57600,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `tbl_drone` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,4 +230,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-09 19:59:03
+-- Dump completed on 2022-09-15 21:51:19
