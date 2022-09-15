@@ -41,11 +41,14 @@ public class Drone {
 	@Column(name = "max_height")
 	private Long maxHeight;
 	
-	@Column(name = "ip")
-	private String ip;
+	@Column(name = "connect_type")
+	private String connectType;
 	
-	@Column(name = "port")
-	private int port;
+	@Column(name = "connect_ip")
+	private String connectIp;
+	
+	@Column(name = "connect_port")
+	private int connectPort;
 	
 	@Column
 	private String modelName;
@@ -185,24 +188,32 @@ public class Drone {
 		super();
 	}
 
-	public String getIp() {
-		return ip;
+	public String getConnectType() {
+		return connectType;
 	}
 
-	public void setIp(String ip) {
-		this.ip = ip;
+	public void setConnectType(String connectType) {
+		this.connectType = connectType;
 	}
 
-	public int getPort() {
-		return port;
+	public String getConnectIp() {
+		return connectIp;
 	}
 
-	public void setPort(int port) {
-		this.port = port;
+	public void setConnectIp(String connectIp) {
+		this.connectIp = connectIp;
+	}
+
+	public int getConnectPort() {
+		return connectPort;
+	}
+
+	public void setConnectPort(int connectPort) {
+		this.connectPort = connectPort;
 	}
 
 	public Drone(int id, String droneName, String serialNo, Long maxWeightPackageDelivery,
-			Long maxSpeed, Long maxHeight, String ip, int port) {
+			Long maxSpeed, Long maxHeight, String type, String ip, int port) {
 		super();
 		this.id = id;
 		this.droneName = droneName;
@@ -210,8 +221,9 @@ public class Drone {
 		this.maxWeightPackageDelivery = maxWeightPackageDelivery;
 		this.maxSpeed = maxSpeed;
 		this.maxHeight = maxHeight;
-		this.ip = ip;
-		this.port = port;
+		this.connectType = type;
+		this.connectIp = ip;
+		this.connectPort = port;
 	}
 
 	public boolean isServerActive() {

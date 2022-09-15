@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.core.io.ClassPathResource;
 
@@ -16,7 +17,7 @@ public class SdkServer {
 	
 	private int droneId;
 	
-	private String ipDrone;
+	private String ipDrone, connectType;
 	
 	private int portDrone;
 	
@@ -28,13 +29,22 @@ public class SdkServer {
 		return droneId;
 	}
 
+	public String getConnectType() {
+		return connectType;
+	}
+
+	public void setConnectType(String connectType) {
+		this.connectType = connectType;
+	}
+
 	public void setDroneId(int droneId) {
 		this.droneId = droneId;
 	}
 
-	public SdkServer(int droneId, String ipDrone, int portDrone, String mavSdkServerDir, String mavSdkServerFilename) {
+	public SdkServer(int droneId, String connectType, String ipDrone, int portDrone, String mavSdkServerDir, String mavSdkServerFilename) {
 		super();
 		this.droneId = droneId;
+		this.connectType = connectType;
 		this.ipDrone = ipDrone;
 		this.portDrone = portDrone;
 		this.mavSdkServerDir = mavSdkServerDir;
@@ -89,15 +99,20 @@ public class SdkServer {
 	}
 	
 	public String generatePortSystem() {
-		int portDroneNumb = getPortDrone();
-		setPortSystem(((portDroneNumb - 14540 + 50050)));
+		if (connectType.equals("serial")) {
+			int random = new Random().nextInt(50200 - 50100) + 50100;
+			setPortSystem(random);
+		} else {			
+			int portDroneNumb = getPortDrone();
+			setPortSystem(((portDroneNumb - 14540 + 50050)));
+		}
 		return Integer.toString(getPortSystem());
 	}
 	
 	public void init() throws IOException, InterruptedException {
 		List<String> commands = new ArrayList<>();
 		commands.add("./"+ this.mavSdkServerFilename); 
-		commands.add("udp://"+ generateIpDrone() +":"+ this.portDrone);
+		commands.add(this.connectType + "://"+ generateIpDrone() +":"+ this.portDrone);
 		commands.add("-p");
 		commands.add(generatePortSystem());
 
@@ -106,10 +121,10 @@ public class SdkServer {
 
         pb.directory(new File(file.getAbsolutePath()));
         pb.redirectErrorStream(true);
+        System.out.println("Mavsdk server is starting at " + this.connectType+ "://"+ generateIpDrone() +":"+ this.portDrone +" and portsystem:" + getPortSystem());
         
         process = pb.start();
          
-        System.out.println("Mavsdk server is starting at " + "udp://"+ generateIpDrone() +":"+ this.portDrone );
         // for reading the ouput from stream
 //        BufferedReader stdInput = new BufferedReader(new
 //                InputStreamReader(process.getInputStream()));
@@ -117,6 +132,5 @@ public class SdkServer {
 //        while ((s = stdInput.readLine()) != null) {
 //            System.out.println(s);
 //        }
-        System.out.println("Done!");
 	}
 }

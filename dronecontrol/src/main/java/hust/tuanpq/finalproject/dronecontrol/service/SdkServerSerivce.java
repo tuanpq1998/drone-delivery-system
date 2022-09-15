@@ -46,7 +46,7 @@ public class SdkServerSerivce {
 	public void initOne(Drone drone) throws IOException, InterruptedException {
 		int id = drone.getId();
 		if (getByDroneId(id) == null) {
-			SdkServer server = new SdkServer(id, drone.getIp(), drone.getPort(), sdkServerDir, sdkServerFilename);
+			SdkServer server = new SdkServer(id, drone.getConnectType() ,drone.getConnectIp(), drone.getConnectPort(), sdkServerDir, sdkServerFilename);
 			server.init();
 			Thread.sleep(2000);
 			if (isSystemDroneConnect(new io.mavsdk.System("localhost", server.getPortSystem()))) {
