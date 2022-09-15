@@ -56,7 +56,7 @@ export default class DroneItem extends Component {
                 )
               ) : null}{" "}
               <span className="badge badge-dark">
-                {drone.ip} - {drone.port}
+              {drone.connectType} - {drone.connectIp} - {drone.connectPort}
               </span>
             </dd>
           </dl>

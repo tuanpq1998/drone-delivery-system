@@ -14,17 +14,25 @@ class DroneAdd extends Component {
       maxHeight: 10,
       maxWeightPackageDelivery: 10,
       maxSpeed: 10,
-      ip: "localhost",
-      port: "",
+      connectType : "udp",
+      connectIp: "localhost",
+      connectPort: "",
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
   handleInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
     });
+  }
+
+  handleSelectChange(event) {
+    this.setState({
+      connectType : event.target.value
+    })
   }
 
   handleSubmit(event) {
@@ -45,8 +53,9 @@ class DroneAdd extends Component {
       maxHeight,
       maxWeightPackageDelivery,
       maxSpeed,
-      ip,
-      port,
+      connectType,
+      connectIp,
+      connectPort,
     } = this.state;
     return (
       <>
@@ -137,26 +146,39 @@ class DroneAdd extends Component {
                           </div>
                         </div>
                         <div className="row">
-                          <div className="form-group col-md-6">
-                            <label htmlFor="ip">IP: </label>
+                        <div className="form-group col-md-4">
+                            <label htmlFor="connectType">Type: </label>
+                            <select onChange={this.handleSelectChange} 
+                              value={connectType} 
+                              className="form-control" 
+                              id="connectType" 
+                              name="connectType"> 
+                              <option value="tcp">TCP</option>
+                              <option value="udp">UDP</option>
+                              <option value="serial">Serial</option>
+                            </select>
+                          </div>
+
+                          <div className="form-group col-md-4">
+                            <label htmlFor="connectIp">IP: </label>
                             <input
                               onChange={this.handleInputChange}
-                              value={ip}
+                              value={connectIp}
                               type="text"
                               className="form-control"
-                              id="ip"
-                              name="ip"
+                              id="connectIp"
+                              name="connectIp"
                             />
                           </div>
-                          <div className="form-group  col-md-6">
-                            <label htmlFor="port">Port: </label>
+                          <div className="form-group  col-md-4">
+                            <label htmlFor="connectPort">Port: </label>
                             <input
                               onChange={this.handleInputChange}
-                              value={port}
+                              value={connectPort}
                               type="text"
                               className="form-control"
-                              id="port"
-                              name="port"
+                              id="connectPort"
+                              name="connectPort"
                             />
                           </div>
                         </div>

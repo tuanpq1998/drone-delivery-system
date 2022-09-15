@@ -14,7 +14,7 @@ export default class DroneView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      loading: true,
       drones: [],
       displayDroneIds: [],
       clientConnected : false,
@@ -37,6 +37,7 @@ export default class DroneView extends Component {
         // const intervalId = setInterval(that.sendMsgUpdateLocation, 5000);
         this.setState({
           drones: list.data,
+          loading : false,
           // intervalId, 
           homeLocation : home.data
         });
@@ -220,13 +221,21 @@ export default class DroneView extends Component {
   // }
 
   render() {
-    const { drones, clientConnected, homeLocation, displayDroneIds, selectedId } = this.state;
+    const { drones, clientConnected, homeLocation, displayDroneIds, selectedId, loading } = this.state;
     
     const pushpins = this.gerenateDronePushPin();
     homeLocation && pushpins.push(this.gerenateHomePushPin());
     pushpins.push(...this.gerenateSenderAndReceiverPushPin());
 
     const polylines = this.generatePolylines();
+
+    const loadingComponent = (
+      <div className="card text-center align-items-center justify-content-center" style={{height : "100vh"}} >
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+      </div>
+    )
 
     return (
       <>
@@ -245,13 +254,14 @@ export default class DroneView extends Component {
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-4">
-                <DroneList
+                {loading ? loadingComponent :<DroneList
                   drones={drones}
                   handleDisplayOnMap={this.subscribeOnMap}
                   handleHideOnMap={this.unSubscribeOnMap}
                   displayIds={displayDroneIds}
                   handleStartMission={this.handleStartMissionBtnClick}
                 />
+                }
               </div>
               <div className="col-md-8">
                 <ReactBingmaps
