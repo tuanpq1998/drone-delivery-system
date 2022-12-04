@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `drone_manager` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `drone_manager`;
--- MySQL dump 10.13  Distrib 8.0.30, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: drone_manager
 -- ------------------------------------------------------
--- Server version	8.0.30-0ubuntu0.20.04.2
+-- Server version	8.0.31-0ubuntu0.20.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -94,8 +94,13 @@ CREATE TABLE `tbl_drone` (
   `location_longitude` decimal(10,5) DEFAULT NULL,
   `location_latitude` decimal(10,5) DEFAULT NULL,
   `location_altitude` decimal(10,5) DEFAULT NULL,
+  `battery_voltage` decimal(5,2) DEFAULT NULL,
+  `battery_percent` decimal(5,2) DEFAULT NULL,
+  `velocity_horizontal` decimal(5,2) DEFAULT NULL,
+  `velocity_vertical` varchar(45) DEFAULT NULL,
   `last_updated` datetime DEFAULT NULL,
   `step_delivery` int DEFAULT NULL,
+  `tbl_dronecol` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `active_mission_id` (`active_mission_id`),
   CONSTRAINT `tbl_drone_ibfk_1` FOREIGN KEY (`active_mission_id`) REFERENCES `tbl_mission` (`id`)
@@ -108,7 +113,7 @@ CREATE TABLE `tbl_drone` (
 
 LOCK TABLES `tbl_drone` WRITE;
 /*!40000 ALTER TABLE `tbl_drone` DISABLE KEYS */;
-INSERT INTO `tbl_drone` VALUES (1,'IF7MF9IPDD4V','Tuan drone','DJI Mavic',10,10,10,'2022-08-01 15:54:25','udp','localhost',14540,NULL,105.84117,21.02450,-0.00900,'2022-09-15 21:51:19',NULL),(2,'MEC8LIYDUYW4','Tuan drone 2','DJI Mavic',12,10,10,'2022-08-01 10:54:25','udp','localhost',14541,NULL,105.84262,21.00743,0.02900,'2022-08-08 18:50:45',NULL),(3,'1ES51UGMNMPF','Tuandrone3','DJI Mavic',10,15,10,'2022-08-01 01:54:25','udp','localhost',14542,NULL,105.84262,21.00743,0.01200,'2022-08-01 20:10:18',NULL),(4,'MPFSE151UGMN','Tuan drone 4','DJI Mini',4,4,4,'2022-08-01 01:54:25','udp','localhost',14543,NULL,NULL,NULL,NULL,NULL,NULL),(14,'GK5RLL2USTFS','Tuan drone 5','DJI',10,10,10,'2022-08-04 01:07:04','udp','localhost',14544,NULL,NULL,NULL,NULL,NULL,NULL),(15,'E7EBGGGESRDS','Tuandrone 6','Mavic',10,12,10,'2022-08-04 01:08:36','udp','localhost',14545,NULL,NULL,NULL,NULL,NULL,NULL),(16,'E7EBGGGESRDS','Tuandrone 6','DJI',10,12,10,'2022-08-04 01:09:37','udp','localhost',14545,NULL,NULL,NULL,NULL,NULL,NULL),(32,'123321ABCCBA','Tuandrone 7','Drone ko ten',10,10,10,'2022-09-15 21:19:54','serial','COM10',57600,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `tbl_drone` VALUES (1,'IF7MF9IPDD4V','Tuan drone','DJI Mavic',10,10,10,'2022-08-01 15:54:25','udp','localhost',14540,2,105.84262,21.00743,-0.01100,16.20,1.00,0.00,'0.0','2022-12-04 17:48:59',NULL,NULL),(2,'MEC8LIYDUYW4','Tuan drone 2','DJI Mavic',12,10,10,'2022-08-01 10:54:25','udp','localhost',14541,NULL,105.84262,21.00743,0.00700,16.20,1.00,0.00,NULL,'2022-12-04 15:01:01',NULL,NULL),(3,'1ES51UGMNMPF','Tuandrone3','DJI Mavic',10,15,10,'2022-08-01 01:54:25','udp','localhost',14542,NULL,105.84262,21.00743,0.01200,NULL,NULL,NULL,NULL,'2022-08-01 20:10:18',NULL,NULL),(32,'123321ABCCBA','Tuandrone 7','Drone ko ten',10,10,10,'2022-09-15 21:19:54','serial','COM10',57600,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `tbl_drone` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +197,7 @@ CREATE TABLE `tbl_mission` (
 
 LOCK TABLES `tbl_mission` WRITE;
 /*!40000 ALTER TABLE `tbl_mission` DISABLE KEYS */;
-INSERT INTO `tbl_mission` VALUES (2,'9lsZSx1S2mMLxgV','Tai nghe gaming','100x100x100','5',NULL,NULL,'2022-06-08 16:53:56',2,1,12.0,12.0,55.00000,'Drone returned.','2022-08-08 18:44:37',1,0,1,'Tuan','0123456789','Thong Nhat Park, Le Duan',21.00751,50.00000,105.84319,'No 55 Giai Phong, Dong Tam, HN',21.00627,'105.84319',50.00000,'eGQ6rhqoDh/Isa2sir3SrQ==','2022-8-08 18:40:54:: Starting ...|2022-8-08 18:41:33:: Take off from home, going to sender.|2022-8-08 18:41:55:: Arrived at sender, getting the package.|2022-8-08 18:42:22:: Got the package, going to receiver.|2022-8-08 18:42:43:: Arrived at receiver, dropping package.|2022-8-08 18:43:10:: Mission done, returning to home...|2022-8-08 18:44:37:: Drone returned.|'),(4,'XL4Pr42wCRHyq9r','Op dien thoai iPhone','100x150x100','2kg','100000','','2022-06-08 16:58:44',2,NULL,60.0,10.0,0.00000,'DI LAY HANG','2022-08-01 19:47:02',0,0,0,'QTuan','0123456789','1 Duong Dai Co Viet, Hai Ba Trung, HN',NULL,50.00000,NULL,NULL,NULL,NULL,0.00000,'8o2WAYQSUsWH7THj2bj1NQ==',NULL),(5,'tDgT9VvlTUei5bm','Mo hinh Pokemon mini','100x150x100','2kg','100000','','2022-06-08 17:00:00',2,NULL,60.0,10.0,0.00000,'DI LAY HANG',NULL,0,0,0,'QTuan','0123456789','1 Duong Dai Co Viet, Hai Ba Trung, HN',NULL,50.00000,NULL,NULL,NULL,NULL,0.00000,'8o2WAYQSUsWH7THj2bj1NQ==',NULL),(6,'0gSlCmCyMUSz6QI','Giay gau truc','100x150x100','2kg','100000','','2022-06-08 17:01:17',2,NULL,60.0,10.0,0.00000,'DI LAY HANG',NULL,0,0,0,'QTuan','0123456789','1 Duong Dai Co Viet, Hai Ba Trung, HN',NULL,50.00000,NULL,NULL,NULL,NULL,0.00000,'eGQ6rhqoDh/Isa2sir3SrQ==',NULL),(20,'NZrT7XSYfwL3Xv4','Chuot Razer','50x50x50','1','500000','Hang de vo xin nhe tay','2022-08-04 23:45:48',2,NULL,0.0,0.0,100.00000,NULL,NULL,0,0,0,'Dang Minh Tuan','0987654321','Cong vien Thong Nhat, HN',21.01138,50.00000,105.84344,NULL,21.00363,'105.84332323055709',50.00000,'ZL2d6SF/zUFSUI1rIswcdw==',NULL),(21,'7sYyzagTam70z5x','Sim dien thoai 4G','20x20x20','1kg','20000','','2022-08-05 22:51:36',2,NULL,0.0,0.0,100.00000,NULL,NULL,0,0,0,'Pham Tuan Viet','0987423651','Ngõ 78 Đường Giải Phóng, Hanoi, Hanoi',21.00229,50.00000,105.84015,'No 55 Giai Phong, Dong Tam, HN',21.00363,'105.84332323055709',50.00000,'iT78sYtKC8c9z9PpFFc/mw==',NULL),(22,'xufj8VSb0v9XiYI','Do choi Lego','20x20x20','2kg','100000','','2022-08-05 23:06:17',2,2,12.0,12.0,55.00000,'Drone returned.','2022-08-08 18:47:27',1,0,1,'Anh Minh','0123654987','Đường Đại Cồ Việt, Hanoi, Hanoi',21.00816,50.00000,105.84745,'No 55 Giai Phong, Dong Tam, HN',21.00363,'105.84159',50.00000,'gHxWk4lSHFDwzfbeODdfVw==','2022-8-08 18:41:14:: Starting ...|2022-8-08 18:41:52:: Take off from home, going to sender.|2022-8-08 18:42:45:: Arrived at sender, getting the package.|2022-8-08 18:43:12:: Got the package, going to receiver.|2022-8-08 18:44:43:: Arrived at receiver, dropping package.|2022-8-08 18:45:10:: Mission done, returning to home...|2022-8-08 18:47:27:: Drone returned.|');
+INSERT INTO `tbl_mission` VALUES (2,'9lsZSx1S2mMLxgV','Tai nghe gaming','100x100x100','5',NULL,NULL,'2022-06-08 16:53:56',2,1,30.0,10.0,60.00000,'Arrived at receiver, dropping package.','2022-12-04 17:24:08',1,0,0,'Tuan','0123456789','Thong Nhat Park, Le Duan',21.00751,50.00000,105.84319,'No 55 Giai Phong, Dong Tam, HN',21.00627,'105.84319',50.00000,'','2022-12-04 17:20:59:: Starting ...|2022-12-04 17:21:37:: Take off from home, going to sender.|2022-12-04 17:21:59:: Arrived at sender, getting the package.|2022-12-04 17:22:55:: Got the package, going to receiver.|2022-12-04 17:23:17:: Arrived at receiver, dropping package.|'),(4,'XL4Pr42wCRHyq9r','Op dien thoai iPhone','100x150x100','2kg','100000','','2022-06-08 16:58:44',2,NULL,60.0,10.0,0.00000,'DI LAY HANG','2022-08-01 19:47:02',0,0,0,'QTuan','0123456789','1 Duong Dai Co Viet, Hai Ba Trung, HN',NULL,50.00000,NULL,NULL,NULL,NULL,0.00000,'8o2WAYQSUsWH7THj2bj1NQ==',NULL),(5,'tDgT9VvlTUei5bm','Mo hinh Pokemon mini','100x150x100','2kg','100000','','2022-06-08 17:00:00',2,NULL,60.0,10.0,0.00000,'DI LAY HANG',NULL,0,0,0,'QTuan','0123456789','1 Duong Dai Co Viet, Hai Ba Trung, HN',NULL,50.00000,NULL,NULL,NULL,NULL,0.00000,'8o2WAYQSUsWH7THj2bj1NQ==',NULL),(6,'0gSlCmCyMUSz6QI','Giay gau truc','100x150x100','2kg','100000','','2022-06-08 17:01:17',2,NULL,60.0,10.0,0.00000,'DI LAY HANG',NULL,0,0,0,'QTuan','0123456789','1 Duong Dai Co Viet, Hai Ba Trung, HN',NULL,50.00000,NULL,NULL,NULL,NULL,0.00000,'eGQ6rhqoDh/Isa2sir3SrQ==',NULL),(20,'NZrT7XSYfwL3Xv4','Chuot Razer','50x50x50','1','500000','Hang de vo xin nhe tay','2022-08-04 23:45:48',2,NULL,0.0,0.0,100.00000,NULL,NULL,0,0,0,'Dang Minh Tuan','0987654321','Cong vien Thong Nhat, HN',21.01138,50.00000,105.84344,NULL,21.00363,'105.84332323055709',50.00000,'ZL2d6SF/zUFSUI1rIswcdw==',NULL),(21,'7sYyzagTam70z5x','Sim dien thoai 4G','20x20x20','1kg','20000','','2022-08-05 22:51:36',2,NULL,0.0,0.0,100.00000,NULL,NULL,0,0,0,'Pham Tuan Viet','0987423651','Ngõ 78 Đường Giải Phóng, Hanoi, Hanoi',21.00229,50.00000,105.84015,'No 55 Giai Phong, Dong Tam, HN',21.00363,'105.84332323055709',50.00000,'iT78sYtKC8c9z9PpFFc/mw==',NULL),(22,'xufj8VSb0v9XiYI','Do choi Lego','20x20x20','2kg','100000','','2022-08-05 23:06:17',2,2,12.0,12.0,55.00000,'Drone returned.','2022-08-08 18:47:27',1,0,1,'Anh Minh','0123654987','Đường Đại Cồ Việt, Hanoi, Hanoi',21.00816,50.00000,105.84745,'No 55 Giai Phong, Dong Tam, HN',21.00363,'105.84159',50.00000,'gHxWk4lSHFDwzfbeODdfVw==','2022-8-08 18:41:14:: Starting ...|2022-8-08 18:41:52:: Take off from home, going to sender.|2022-8-08 18:42:45:: Arrived at sender, getting the package.|2022-8-08 18:43:12:: Got the package, going to receiver.|2022-8-08 18:44:43:: Arrived at receiver, dropping package.|2022-8-08 18:45:10:: Mission done, returning to home...|2022-8-08 18:47:27:: Drone returned.|');
 /*!40000 ALTER TABLE `tbl_mission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -230,4 +235,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-15 21:51:19
+-- Dump completed on 2022-12-04 17:48:59
