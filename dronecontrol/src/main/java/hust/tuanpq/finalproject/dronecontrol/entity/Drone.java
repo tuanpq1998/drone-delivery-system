@@ -59,6 +59,9 @@ public class Drone {
 	@Column(name="last_updated")
 	private String lastUpdatedAt;
 	
+	@Column
+	private Float batteryVoltage, batteryPercent, velocityHorizontal, velocityVertical;
+	
 	@Column(updatable = false)
 	private String createdAt;
 	
@@ -71,6 +74,38 @@ public class Drone {
 	
 	@Column(name="active_mission_id", insertable = false, updatable = false)
 	private Integer activeMissionId;
+
+	public Float getBatteryVoltage() {
+		return batteryVoltage;
+	}
+	
+	public Float getVelocityVertical() {
+		return velocityVertical;
+	}
+
+	public void setVelocityVertical(Float velocityVertical) {
+		this.velocityVertical = velocityVertical;
+	}
+
+	public Float getVelocityHorizontal() {
+		return velocityHorizontal;
+	}
+
+	public void setVelocityHorizontal(Float velocityHorizontal) {
+		this.velocityHorizontal = velocityHorizontal;
+	}
+
+	public void setBatteryVoltage(float batteryVoltage) {
+		this.batteryVoltage = batteryVoltage;
+	}
+
+	public Float getBatteryPercent() {
+		return batteryPercent;
+	}
+
+	public void setBatteryPercent(float batteryPercent) {
+		this.batteryPercent = batteryPercent;
+	}
 
 	public Integer getActiveMissionId() {
 		return activeMissionId;

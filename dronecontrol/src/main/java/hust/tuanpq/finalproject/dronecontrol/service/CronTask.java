@@ -3,14 +3,14 @@ package hust.tuanpq.finalproject.dronecontrol.service;
 import java.util.TimerTask;
 
 import hust.tuanpq.finalproject.dronecontrol.entity.Drone;
-import hust.tuanpq.finalproject.dronecontrol.model.Location;
+import hust.tuanpq.finalproject.dronecontrol.model.ExtraDroneInfo;
 
 public class CronTask extends TimerTask {
 
 	private io.mavsdk.System drone;
 	private int droneId;
 	
-	private LocationService locationService;
+	private ExtraDroneInfoService extraDroneInfoService;
 	
 	private DroneService droneService;
 
@@ -19,11 +19,11 @@ public class CronTask extends TimerTask {
 	}
 
 
-	public CronTask(int droneId, io.mavsdk.System drone, LocationService locationService, DroneService droneService) {
+	public CronTask(int droneId, io.mavsdk.System drone, ExtraDroneInfoService extraDroneInfoService, DroneService droneService) {
 		super();
 		this.drone = drone;
 		this.droneId = droneId;
-		this.locationService = locationService;
+		this.extraDroneInfoService = extraDroneInfoService;
 		this.droneService = droneService;
 	}
 
@@ -31,14 +31,22 @@ public class CronTask extends TimerTask {
 	@Override
 	public void run() {
 
-		Location l = locationService.getCurrentLocation(drone);
+		ExtraDroneInfo extraDroneInfo = extraDroneInfoService.getCurrentExtraInfo(drone);
+		
 		Drone drone = droneService.getById(droneId);
 
-		System.out.println("" + droneId + l);
+		System.out.println("Drone id: " + droneId + " " + extraDroneInfo);
+//		System.out.println(batteryInfo[0] + ", " + batteryInfo[1]);
 
-		drone.setLocationLatitude(l.getLatitude());
-		drone.setLocationAltitude(l.getAltitude());
-		drone.setLocationLongitude(l.getLongitude());
+		drone.setLocationLatitude(extraDroneInfo.getLatitude());
+		drone.setLocationAltitude(extraDroneInfo.getAltitude());
+		drone.setLocationLongitude(extraDroneInfo.getLongitude());
+		
+		drone.setBatteryVoltage(extraDroneInfo.getBatteryVoltage());
+		drone.setBatteryPercent(extraDroneInfo.getBatteryPercent());
+		
+		drone.setVelocityHorizontal(extraDroneInfo.getVelocityHorizontal());
+		drone.setVelocityVertical(extraDroneInfo.getVelocityVertical());
 		
 		droneService.saveDrone(drone);
 	}

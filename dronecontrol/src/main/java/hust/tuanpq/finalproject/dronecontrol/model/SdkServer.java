@@ -117,9 +117,9 @@ public class SdkServer {
 		commands.add(generatePortSystem());
 
 		ProcessBuilder pb = new ProcessBuilder(commands);
-        File file = new ClassPathResource(this.mavSdkServerDir, SdkServer.class.getClassLoader()).getFile();
+		File file = new ClassPathResource(this.mavSdkServerDir, SdkServer.class.getClassLoader()).getFile();
 
-        pb.directory(new File(file.getAbsolutePath()));
+	    pb.directory(new File(file.getAbsolutePath()));
         pb.redirectErrorStream(true);
         System.out.println("Mavsdk server is starting at " + this.connectType+ "://"+ generateIpDrone() +":"+ this.portDrone +" and portsystem:" + getPortSystem());
         

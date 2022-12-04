@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import hust.tuanpq.finalproject.dronecontrol.entity.Drone;
 import hust.tuanpq.finalproject.dronecontrol.entity.Home;
 import hust.tuanpq.finalproject.dronecontrol.entity.Mission;
-import hust.tuanpq.finalproject.dronecontrol.model.Location;
+import hust.tuanpq.finalproject.dronecontrol.model.ExtraDroneInfo;
 import hust.tuanpq.finalproject.dronecontrol.model.SdkServer;
 import hust.tuanpq.finalproject.dronecontrol.repository.DroneRepository;
 import hust.tuanpq.finalproject.dronecontrol.repository.MissionRepository;

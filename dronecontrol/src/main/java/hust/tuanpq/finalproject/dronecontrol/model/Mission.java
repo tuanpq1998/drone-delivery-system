@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Mission {
 
-	private List<Location> locations = new ArrayList<Location>();
+	private List<ExtraDroneInfo> locations = new ArrayList<ExtraDroneInfo>();
 	
 	private boolean isReturnToLaunch;
 
@@ -27,15 +27,15 @@ public class Mission {
 		this.isReturnToLaunch = isReturnToLaunch;
 	}
 
-	public List<Location> getLocations() {
+	public List<ExtraDroneInfo> getLocations() {
 		return locations;
 	}
 
-	public void setLocations(List<Location> locations) {
+	public void setLocations(List<ExtraDroneInfo> locations) {
 		this.locations = locations;
 	}
 
-	public Mission(List<Location> locations) {
+	public Mission(List<ExtraDroneInfo> locations) {
 		super();
 		this.locations = locations;
 	}
@@ -49,9 +49,9 @@ public class Mission {
 		return "Mission [locations=" + locations + "]";
 	}
 	
-	public boolean addLocation(Location location) {
+	public boolean addLocation(ExtraDroneInfo location) {
 		if (this.locations == null)
-			this.locations = new ArrayList<Location>();
+			this.locations = new ArrayList<ExtraDroneInfo>();
 		return this.locations.add(location);
 	}
 }

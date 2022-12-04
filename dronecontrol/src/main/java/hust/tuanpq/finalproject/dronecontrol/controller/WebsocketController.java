@@ -30,11 +30,11 @@ import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 
 import hust.tuanpq.finalproject.dronecontrol.entity.Drone;
 import hust.tuanpq.finalproject.dronecontrol.entity.Mission;
-import hust.tuanpq.finalproject.dronecontrol.model.Location;
+import hust.tuanpq.finalproject.dronecontrol.model.ExtraDroneInfo;
 import hust.tuanpq.finalproject.dronecontrol.model.LoginRequest;
 import hust.tuanpq.finalproject.dronecontrol.model.SdkServer;
 import hust.tuanpq.finalproject.dronecontrol.service.DroneService;
-import hust.tuanpq.finalproject.dronecontrol.service.LocationService;
+import hust.tuanpq.finalproject.dronecontrol.service.ExtraDroneInfoService;
 import hust.tuanpq.finalproject.dronecontrol.service.SdkServerSerivce;
 import hust.tuanpq.finalproject.dronecontrol.service.MissionService;
 

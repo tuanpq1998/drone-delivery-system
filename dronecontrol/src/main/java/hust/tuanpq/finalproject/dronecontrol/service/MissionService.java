@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import hust.tuanpq.finalproject.dronecontrol.entity.Account;
 import hust.tuanpq.finalproject.dronecontrol.entity.Mission;
-import hust.tuanpq.finalproject.dronecontrol.model.Location;
+import hust.tuanpq.finalproject.dronecontrol.model.ExtraDroneInfo;
 import hust.tuanpq.finalproject.dronecontrol.repository.MissionRepository;
 import hust.tuanpq.finalproject.dronecontrol.utility.CustomPasswordEncoder;
 import hust.tuanpq.finalproject.dronecontrol.utility.CustomPasswordUtility;
@@ -42,10 +42,10 @@ public class MissionService {
 	}
 	
 	public void uploadMission(hust.tuanpq.finalproject.dronecontrol.model.Mission mission, System drone) {
-		List<Location> locations = mission.getLocations();
+		List<ExtraDroneInfo> locations = mission.getLocations();
 		List<MissionItem> list = new ArrayList<MissionItem>();
 
-		for(Location l : locations) {
+		for(ExtraDroneInfo l : locations) {
 			list.add(new MissionItem(l.getLatitude(), l.getLongitude(), 10f, 10f, true, Float.NaN, Float.NaN,
 					CameraAction.NONE, Float.NaN, 1.0, Float.NaN, Float.NaN, Float.NaN));
 		}

@@ -22,7 +22,7 @@ public class SdkServerSerivce {
 	private String sdkServerFilename;
 	
 	@Autowired
-	private LocationService locationService;
+	private ExtraDroneInfoService extraDroneInfoService;
 	
 	@Lazy
 	@Autowired 
@@ -51,7 +51,7 @@ public class SdkServerSerivce {
 			Thread.sleep(2000);
 			if (isSystemDroneConnect(new io.mavsdk.System("localhost", server.getPortSystem()))) {
 				servers.add(server);
-				CronTask cronTask = new CronTask(id, new io.mavsdk.System("localhost", server.getPortSystem()), locationService, droneService);
+				CronTask cronTask = new CronTask(id, new io.mavsdk.System("localhost", server.getPortSystem()), extraDroneInfoService, droneService);
 				Timer timer = new Timer();
 				timer.schedule(cronTask, 0, 1000);
 //				Thread thread = new Thread(new Runnable() {
@@ -81,7 +81,7 @@ public class SdkServerSerivce {
 	
 	public boolean isSystemDroneConnect(io.mavsdk.System drone) {
 		try {
-			locationService.getCurrentLocation(drone);
+			extraDroneInfoService.getCurrentExtraInfo(drone);
 			return true;
 		} catch (Exception e) {
 			return false;
