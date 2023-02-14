@@ -50,6 +50,9 @@ public class Drone {
 	@Column(name = "connect_port")
 	private int connectPort;
 	
+	@Column(name = "is_emergency")
+	private boolean isEmergency;
+	
 	@Column
 	private String modelName;
 	
@@ -79,6 +82,14 @@ public class Drone {
 		return batteryVoltage;
 	}
 	
+	public boolean isEmergency() {
+		return isEmergency;
+	}
+
+	public void setEmergency(boolean isEmergency) {
+		this.isEmergency = isEmergency;
+	}
+
 	public Float getVelocityVertical() {
 		return velocityVertical;
 	}

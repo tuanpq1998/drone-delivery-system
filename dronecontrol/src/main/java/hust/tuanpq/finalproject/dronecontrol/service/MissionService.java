@@ -26,19 +26,18 @@ import io.reactivex.CompletableSource;
 @Service
 public class MissionService {
 	
-	public void clearMission(System drone) {
-//		CountDownLatch latch = new CountDownLatch(1);
-//		drone.getMission().clearMission()
-//			.doOnComplete(() -> java.lang.System.out.println("clearing"))
-//			.subscribe(() -> java.lang.System.out.println("cleared!"), throwable -> {
-//				java.lang.System.out.println("Error: " + throwable.getMessage());
-//				latch.countDown();
-//			});
-//		try {
-//	      latch.await();
-//	    } catch (InterruptedException ignored) {
-//	      // This is expected
-//	    }
+	public void terminateMissionAndReturnToLand(System drone) {
+		CountDownLatch latch = new CountDownLatch(1);
+		drone.getMission().clearMission().andThen(drone.getAction().returnToLaunch()
+				.doOnComplete(() -> java.lang.System.out.println("return to launch"))
+				).subscribe(() -> {
+					latch.countDown();
+				});
+		try {
+		      latch.await();
+		    } catch (InterruptedException ignored) {
+		      // This is expected
+		    }
 	}
 	
 	public void uploadMission(hust.tuanpq.finalproject.dronecontrol.model.Mission mission, System drone) {
@@ -128,11 +127,12 @@ public class MissionService {
 	}
 	
 	public Mission addNewLogsAndStatus(Mission m, String statusStr) {
+		Mission dbMission = findById(m.getId());
 		String newLog = DateTimeHandler.datetimeToString(new Date()) + ":: " +statusStr.trim() + "|";
-		m.setStatus(statusStr.trim());
-		String oldLogs = m.getLogs();
-		m.setLogs((oldLogs==null ? "": oldLogs )+ newLog);
-		return m;
+		dbMission.setStatus(statusStr.trim());
+		String oldLogs = dbMission.getLogs();
+		dbMission.setLogs((oldLogs==null ? "": oldLogs )+ newLog);
+		return dbMission;
 	}
 
 	public List<Mission> findAllBySellername(String sellerUsername) {

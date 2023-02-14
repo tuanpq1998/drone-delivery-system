@@ -5,6 +5,7 @@ import java.util.TimerTask;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 
+import hust.tuanpq.finalproject.dronecontrol.entity.Drone;
 import hust.tuanpq.finalproject.dronecontrol.service.DroneService;
 
 public class SendLocationCronTask extends TimerTask {
@@ -76,7 +77,8 @@ private int droneId;
 	@Override
 	public void run() {
 		if (count > 0) {
-			template.convertAndSend("/app/location/"+droneId, droneService.getById(droneId) );
+			Drone d = droneService.getById(droneId);
+			template.convertAndSend("/app/location/"+droneId, d );
 		}
 	}
 }

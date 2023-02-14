@@ -170,6 +170,21 @@ public class WebsocketController {
 			}
 		}
 	}
+	
+	@MessageMapping("/emergencyLanding")
+	public void emergencyLanding(@RequestBody int droneId) {
+		droneService.stopMissionAndLand(droneId);
+	}
+	
+	@MessageMapping("/emergencyReturnToLand")
+	public void emergencyReturnToLand(@RequestBody int droneId) {
+		droneService.stopMissionAndReturnToLaunch(droneId);
+	}
+	
+	@MessageMapping("/changeEmergency")
+	public void changeEmergencyMode(@RequestBody int droneId) {
+		droneService.changeEmergencyMode(droneId);
+	}
 
 //	@MessageMapping("/getLocation")
 //    @SendTo("/chat/location")

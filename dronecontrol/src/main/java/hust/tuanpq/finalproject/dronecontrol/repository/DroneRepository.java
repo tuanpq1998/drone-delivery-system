@@ -12,5 +12,7 @@ public interface DroneRepository extends JpaRepository<Drone, Integer> {
 
 	List<Drone> findByActiveMissionNull();
 
+	List<Drone> findByActiveMissionNullAndIsEmergencyFalse();
+
 	
 }

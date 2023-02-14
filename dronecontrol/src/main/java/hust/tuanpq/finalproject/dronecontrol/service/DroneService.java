@@ -17,6 +17,7 @@ import hust.tuanpq.finalproject.dronecontrol.entity.Drone;
 import hust.tuanpq.finalproject.dronecontrol.entity.Home;
 import hust.tuanpq.finalproject.dronecontrol.entity.Mission;
 import hust.tuanpq.finalproject.dronecontrol.model.ExtraDroneInfo;
+import hust.tuanpq.finalproject.dronecontrol.model.MissionThread;
 import hust.tuanpq.finalproject.dronecontrol.model.SdkServer;
 import hust.tuanpq.finalproject.dronecontrol.repository.DroneRepository;
 import hust.tuanpq.finalproject.dronecontrol.repository.MissionRepository;
@@ -44,6 +45,8 @@ public class DroneService {
 	
 	@Autowired
 	private HomeService homeService;
+	
+	private List<MissionThread> missionThreadList = new ArrayList<>();
 	
 //	@PreDestroy
 //	public void disconnect(System drone) {
@@ -205,11 +208,93 @@ public class DroneService {
 		missionRepository.save(dbMission);
 		return droneRepository.save(drone);
 	}
+	
+	public System getSystemByDrone(Drone drone) {
+		return drone == null ? null : sdkServerService.getSystem(drone.getId());
+	}
+	
+	public System getSystemByDroneId(int droneId) {
+		Drone d = getById(droneId);
+		return getSystemByDrone(d);
+	}
+	
+	private System getDroneAndChangeToEmergencyMode(int droneId) {
+		System d = getSystemByDroneId(droneId);
+		if (d == null) return null;
+		
+		Drone drone = getById(droneId);
+		Mission mission = drone.getActiveMission();
 
-	public void stopMission(System d) {
+		for (MissionThread missionThread : missionThreadList) {
+			if (missionThread.getDroneId() == droneId && missionThread.getMissionId() == mission.getId()) 
+				missionThread.getThread().interrupt();
+		}
+		
+		mission.setStatus("");
+		mission.setStarted(false);
+		mission.setTrackingStart(false);
+		mission.setFinished(false);
+		mission.setLogs("");
+		mission.setDrone(null);
+		
+		missionRepository.save(mission);
+		
+		drone.setActiveMission(null);
+		drone.setEmergency(true);
+		droneRepository.save(drone);
+		
+		return d;
+	}
+
+	public void stopMissionAndLand(int droneId) {
+		System d = getDroneAndChangeToEmergencyMode(droneId);
+		if (d == null) return;
+		
 		CountDownLatch latch = new CountDownLatch(1);
 		
-		d.getMission().pauseMission().subscribe(latch::countDown, throwable -> latch.countDown());
+		
+		d.getMission()
+		.pauseMission()
+//		.clearMission()
+		.doOnComplete(() -> java.lang.System.out.println("Stop mission!"))
+			.andThen(d.getAction().land().doOnComplete(() -> java.lang.System.out.println("Landing...")))
+			.andThen(d.getActionServer().getLand())
+			.subscribe(next -> {
+				if (next.booleanValue()) {
+					java.lang.System.out.println("Landed!");
+					latch.countDown();
+				}
+			}, throwable -> latch.countDown());
+		try {
+			latch.await();
+		} catch (InterruptedException ignored) {
+			// This is expected
+		}
+	}
+	
+	public void stopMissionAndReturnToLaunch(int droneId) {
+		System d = getDroneAndChangeToEmergencyMode(droneId);
+		if (d == null) return;
+		
+		CountDownLatch latch = new CountDownLatch(1);
+		Home home = homeService.getHomeLocation();
+		d.getMission()
+		.pauseMission()
+//		.clearMission()
+		.doOnComplete(() -> java.lang.System.out.println("Stop mission!"))
+			.andThen(d.getAction()
+					.gotoLocation(home.getLatitude(), home.getLongitude(), 0f, null)
+//					.returnToLaunch()
+					.doOnComplete(() -> java.lang.System.out.println("Returning...")))
+			.subscribe(() -> {
+				java.lang.System.out.println("Returned!");
+				d.getActionServer().getLand().subscribe(next -> {
+					if (next.booleanValue()) {
+						java.lang.System.out.println("Landed!");
+						latch.countDown();
+					}
+				});
+			}, throwable -> latch.countDown());
 		try {
 			latch.await();
 		} catch (InterruptedException ignored) {
@@ -218,7 +303,7 @@ public class DroneService {
 	}
 
 	public List<Drone> getAssignable()  {
-		List<Drone> freeDrones = droneRepository.findByActiveMissionNull();
+		List<Drone> freeDrones = droneRepository.findByActiveMissionNullAndIsEmergencyFalse();
 		java.lang.System.out.println(freeDrones);
 		List<Drone> res = new ArrayList<Drone>();
 		List<Drone> freeAndActiveDrone;
@@ -335,12 +420,21 @@ public class DroneService {
 				uploadAndStart(droneId, m);
 		    }
 		});
-		thread.start();
 		
+		thread.start();
+		missionThreadList.add(new MissionThread(m.getId(), droneId, thread));
 		m.setStarted(true);
 		
 		return missionRepository.save(m);
 		
+	}
+
+	public void changeEmergencyMode(int droneId) {
+		Drone d = getById(droneId);
+		if (d == null)
+			return;
+		d.setEmergency(false);
+		droneRepository.save(d);
 	}
 	
 }
