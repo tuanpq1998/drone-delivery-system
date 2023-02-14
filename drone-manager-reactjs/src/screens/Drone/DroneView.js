@@ -27,6 +27,9 @@ export default class DroneView extends Component {
     this.sendMsgUpdateLocation = this.sendMsgUpdateLocation.bind(this);
     this.handleWSOnMessage = this.handleWSOnMessage.bind(this);
     this.handleStartMissionBtnClick = this.handleStartMissionBtnClick.bind(this);
+    this.stopMissionAndLand = this.stopMissionAndLand.bind(this);
+    this.stopMissionAndReturn = this.stopMissionAndReturn.bind(this);
+    this.cancelEmergencyMode = this.cancelEmergencyMode.bind(this);
   }
   
   
@@ -83,6 +86,19 @@ export default class DroneView extends Component {
     })
   }
 
+  stopMissionAndLand(droneId) {
+    this.clientRef.sendMessage("/app/emergencyLanding", JSON.stringify(droneId));
+  }
+
+  stopMissionAndReturn(droneId) {
+    this.clientRef.sendMessage("/app/emergencyReturnToLand", JSON.stringify(droneId));
+  }
+
+  cancelEmergencyMode(droneId) {
+    this.clientRef.sendMessage("/app/changeEmergency", JSON.stringify(droneId));
+  }
+
+
   handleWSOnMessage(msg) {
     const {drones} = this.state;
       const drone = drones.find(d => d.id === msg.id);
@@ -92,6 +108,7 @@ export default class DroneView extends Component {
       drone.locationLongitude = msg.locationLongitude;
       drone.lastUpdatedAt = msg.lastUpdatedAt;
       drone.activeMission = msg.activeMission;
+      drone.emergency = msg.emergency;
 
       this.setState({ drones })
   }
@@ -281,7 +298,12 @@ export default class DroneView extends Component {
                   selectedId == null ? 
                   <DroneInfoGeneral isWsConnect={clientConnected} drones={drones} />
                   : 
-                  displayDroneIds.map(did => <DroneInfo key={did} drone={drones.find(d => d.id==did)} />)                  
+                  displayDroneIds.map(did => 
+                    <DroneInfo key={did} 
+                      handleStopAndLand={this.stopMissionAndLand} 
+                      handleStopAndReturn={this.stopMissionAndReturn} 
+                      handleCancelEmergency={this.cancelEmergencyMode}
+                      drone={drones.find(d => d.id==did)} />)                  
                 }
               </div>
             </div>
